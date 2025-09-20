@@ -17,6 +17,7 @@ for (let i = 0; i < cpuCount; i++) {
 }
 
 /*
+$ node process_cpu.js
 Número de CPUs disponibles: 8
 Iniciando proceso N° 1 CPU 1
 Iniciando proceso N° 2 CPU 2

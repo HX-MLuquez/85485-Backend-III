@@ -52,7 +52,18 @@ app.get("/saludo", (req, res) => {
 //! ╚══════════════════════════════════════════════════╝
 
 app.get("/calculo-child", (req, res) => {
-  //* (... ... ...)
+  const child = fork("./src/proceso_hijo.js");
+  child.send(`Iniciar cálculo desde proceso principal PID ${process.pid}`);
+  child.on("message", (msg) => {
+    // { type: "resultado", result: Math.round(result) }
+    if (msg.type === "resultado") {
+      res.status(200).send(`Resultado del cálculo: ${msg.result}`);
+    }
+  });
+  child.on("error", (error) => {
+    console.error("Error en el proceso hijo:", error);
+    res.status(500).send("Error en el cálculo");
+  });
 });
 
 module.exports = app;

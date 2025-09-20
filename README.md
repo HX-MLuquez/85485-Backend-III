@@ -42,6 +42,19 @@ Formar desarrolladores backend capaces de construir aplicaciones escalables, tes
 
 ## 🧪 Proyecto Final: Dockerizando Nuestro Backend
 
+### El Proyecto Integrador se realiza a partir del repo 📁 [Repositorio del Proyecto Final](https://github.com/CoderContenidos/RecursosBackend-Adoptme)
+
+---
+
+### 📌 Entregas
+
+| **Entrega**   | **Requisito**                                                                    | **Fecha**   |
+| ------------- | -------------------------------------------------------------------------------- | ----------- |
+| 1° entrega    | Crear un router llamado `mocks.router.js` que funcione bajo la ruta base. Etc... | Unidad N° 4 |
+| Entrega Final | Entrega de Proyecto Final                                                        | Unidad N° 8 |
+
+---
+
 ### 🎯 Objetivos Generales
 
 - Aplicar mejoras finales al proyecto
@@ -60,10 +73,13 @@ Formar desarrolladores backend capaces de construir aplicaciones escalables, tes
 
 | Área                  | Requisitos                                                              |
 | --------------------- | ----------------------------------------------------------------------- |
+| **Mock con faker js** | Cargar de datos falsos nuestro server                                   |
 | **Tests Funcionales** | Cobertura total de endpoints, casos de éxito y error                    |
 | **Dockerfile**        | Instalación de dependencias, configuración de entorno, reproducibilidad |
 | **DockerHub**         | Imagen accesible públicamente, link en README                           |
 | **Documentación**     | Instrucciones para construir, ejecutar y testear el proyecto            |
+
+#### \* IMPORTANTE: en el Proyecto Integrador de todos los temas que vemos en nuestras 8 clases, el de la Clase 07 **NestJS** **NO se debe APLICAR**. Es decir que se aplica todo desde la Clase 01 a la Clase 06 (inclusive).
 
 ---
 

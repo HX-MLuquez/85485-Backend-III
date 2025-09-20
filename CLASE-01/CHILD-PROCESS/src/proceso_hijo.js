@@ -19,3 +19,9 @@ process.on("message", (msg) => {
   console.timeEnd("Duración del cálculo");
   process.send({ type: "resultado", result: Math.round(result) });
 });
+
+/*
+
+listener("click", ()=>{})
+
+*/
