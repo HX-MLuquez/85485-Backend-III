@@ -1,0 +1,19 @@
+{
+  "name": "actividad-env-config",
+  "version": "1.0.0",
+  "description": "Tenemos una ruta `GET /books` que lee libros desde `db/books.json`. Y vamos a separar en:\r - **routes**\r - **controllers**\r - **services**\r - **managers**",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js --mode prod",
+    "start:dev": "node index.js --mode dev",
+    "start:prod": "node index.js --mode prod",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^14.0.0",
+    "express": "^5.1.0"
+  }
+}

@@ -1,0 +1,59 @@
+# Node modules
+node_modules/
+node_modules
+
+# Package lock files
+package-lock.json
+
+# PDF files
+*.pdf
+
+# PowerPoint files
+*.ppt
+*.pptx
+*.docx
+
+# Video files
+*.mov
+*.mp4
+*.avi
+
+# Audio files
+*.mp3
+
+# Logs
+logs
+*.log
+
+# misc
+.DS_Store
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# dotenv environment variables file
+.env
+.env.*
+!.env.example
+
+dist
+
+# Serverless directories
+.serverless/
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# VSCode local configuration
+.vscode
+
+
+# builds
+build
+
