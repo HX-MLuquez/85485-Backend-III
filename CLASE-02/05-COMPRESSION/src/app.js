@@ -16,6 +16,9 @@ app.use(express.urlencoded({ extended: true }));
 //* ║   >>>   🔵🟢🔵   CODIGO AQUÍ   🔵🟢🔵   <<<   ║
 //* ║═════════════════                ═════════════════║
 //! ╚══════════════════════════════════════════════════╝
+// app.use(compression()); // por defecto con gzip
+app.use(compression({ brotli: { enabled: true, zlib: { level: 11 } } }));
+
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -42,6 +45,10 @@ app.get("/gzip1", (req, res) => {
   //* ║   >>>   🔵🟢🔵   CODIGO AQUÍ   🔵🟢🔵   <<<   ║
   //* ║═════════════════                ═════════════════║
   //! ╚══════════════════════════════════════════════════╝
+  const textoComprimido = zlib.gzipSync(texto, { level: 9 });
+  res.setHeader("Content-Type", "text/plain");
+  res.setHeader("Content-Encoding", "gzip");
+  res.status(200).send(textoComprimido);
 });
 
 // Ruta 2 - Comprimir con zlib brotli
@@ -55,6 +62,31 @@ app.get("/brotli1", (req, res) => {
   //* ║   >>>   🔵🟢🔵   CODIGO AQUÍ   🔵🟢🔵   <<<   ║
   //* ║═════════════════                ═════════════════║
   //! ╚══════════════════════════════════════════════════╝
+  const textoComprimido = zlib.brotliCompressSync(texto);
+  res.setHeader("Content-Type", "text/plain");
+  res.setHeader("Content-Encoding", "br");
+  res.status(200).send(textoComprimido);
 });
 
 module.exports = app;
+
+/*
+10 mb -> 1,5 seg 
+comprimo 0,2  0,7  0,2 descomprimo   1,1  
+comprimo 0,4  0,5  0,4 descomprimo   1,3 seg
+
+5 mb -> 0,75
+comprimo 0,4  0,3  0,4 descomprimo   1 seg
+comprimo 0,5  0,1  0,5 descomprimo   1,1 seg
+comprimo 0,2  0,5  0,2 descomprimo   0,9  
+*/
+
+/*
+COMPRIMIR
+
+ZLIB (node native)   COMPRESSION (lib ext)
+
+gzip || brotli
+
+Niveles de comprimir 1 - 10
+*/

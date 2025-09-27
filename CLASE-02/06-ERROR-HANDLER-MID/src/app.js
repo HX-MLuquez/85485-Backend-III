@@ -14,6 +14,13 @@ app.use(express.urlencoded({ extended: true }));
 //* ║   >>>   🔵🟢🔵   CODIGO AQUÍ   🔵🟢🔵   <<<   ║
 //* ║═════════════════                ═════════════════║
 //! ╚══════════════════════════════════════════════════╝
+const ListErrors = {
+  ROUTING_ERROR: 1,
+  INVALID_TYPES_ERROR: 2,
+  DATABASE_ERROR: 3,
+  AUTH_ERROR: 4,
+  INVALID_PARAM_ERROR: 5,
+};
 
 // function errorer(code) {
 //   if(code===1) console.log(code);
@@ -30,6 +37,12 @@ class CustomError extends Error {
   //* ║   >>>   🔵🟢🔵   CODIGO AQUÍ   🔵🟢🔵   <<<   ║
   //* ║═════════════════                ═════════════════║
   //! ╚══════════════════════════════════════════════════╝
+  constructor(message, code = 500, cause = null) {
+    super(message); // Herencia -> Es para el constructor del padre -> Error(message)
+    this.code = code;
+    this.cause = cause;
+    Error.captureStackTrace(this, this.constructor);
+  }
 }
 
 // const errors = new CustomError("soy el mensaje", 404, {campo: "email", detalle: "Este campo es obligatorio y debe ser un string tipo email"})
@@ -77,7 +90,7 @@ app.get("/error-custom-pro", (req, res, next) => {
     const error = new CustomError(
       "Parámetros inválidos en la consulta",
       ListErrors.INVALID_PARAM_ERROR,
-      errores
+      errores // cause -> [{campo, detalle},{campo, detalle},{campo, detalle}]
     );
     return next(error);
   }
@@ -96,13 +109,24 @@ app.get("/error-custom-pro", (req, res, next) => {
 // error {message: "holis", code: 2, cause:{}}
 function errorHandle(error, req, res, next) {
   console.error("Error capturado por el middleware:");
-  //! ╔══════════════════════════════════════════════════╗
-  //* ║═════════════════                ═════════════════║
-  //* ║   >>>   🔵🟢🔵   CODIGO AQUÍ   🔵🟢🔵   <<<   ║
-  //* ║═════════════════                ═════════════════║
-  //! ╚══════════════════════════════════════════════════╝
-}
+  let statusCode = 500;
+  if (error.code && typeof error.code === "number") {
+    if (error.code === ListErrors.INVALID_PARAM_ERROR) statusCode = 402;
 
+    console.warn("Error controlado:");
+    console.warn("Mensaje:", error.message);
+    console.warn("Causa:", JSON.stringify(error.cause, null, 2));
+    console.warn("Stack trace:", error.stack);
+    res.setHeader("Content-Type", "application/json");
+
+    //* Respuesta controlada
+    return res.status(statusCode).json({
+      status: "error",
+      message: error.message,
+      cause: error.cause || "No se proporcionó causa",
+    });
+  }
+}
 // -------------------------
 //* Middelware de Error SIEMPRE deben venir al FINAL de TODO
 // -------------------------
