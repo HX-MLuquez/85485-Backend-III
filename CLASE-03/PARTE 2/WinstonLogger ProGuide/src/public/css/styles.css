@@ -1,0 +1,94 @@
+/* HOMEPAGE STYLES */
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: radial-gradient(ellipse at top, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.container {
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-top: 3rem;
+  color: #ffe81f;
+  letter-spacing: 2px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #ffe81f; /* unificado con el color repetido */
+  margin-top: 2rem;
+  text-align: center;
+}
+
+hr {
+  width: 50%; /* unificado con la última regla */
+  margin: 1rem auto;
+  border: 1px solid #ffe81f;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+li {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid #ffe81f44;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+p {
+  margin: 0.5rem 0;
+  color: #ddd;
+}
+
+a {
+  display: inline-block; /* consolidado */
+  margin: 3rem auto 2rem;
+  padding: 12px 24px;
+  background-color: #ffe81f;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  width: fit-content;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+a:hover {
+  background-color: #ffd700;
+}

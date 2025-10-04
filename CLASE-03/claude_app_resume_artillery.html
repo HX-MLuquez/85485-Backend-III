@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Informe de Pruebas de Carga</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: white;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        cursor: pointer;
+      }
+
+      .icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-right: 15px;
+      }
+
+      .icon.success {
+        background: #10b981;
+      }
+      .icon.error {
+        background: #ef4444;
+      }
+      .icon.warning {
+        background: #f59e0b;
+      }
+      .icon.info {
+        background: #3b82f6;
+      }
+
+      h2 {
+        color: #333;
+        font-size: 1.5em;
+      }
+
+      .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .metric {
+        background: #f8fafc;
+        padding: 15px;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+      }
+
+      .metric-label {
+        font-size: 0.85em;
+        color: #64748b;
+        margin-bottom: 5px;
+      }
+
+      .metric-value {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: #334155;
+      }
+
+      .metric-unit {
+        font-size: 0.9em;
+        color: #94a3b8;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 30px;
+        background: #e2e8f0;
+        border-radius: 15px;
+        overflow: hidden;
+        margin: 10px 0;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        transition: width 1s ease;
+      }
+
+      .alert {
+        padding: 15px;
+        border-radius: 10px;
+        margin: 15px 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .alert.danger {
+        background: #fee2e2;
+        border-left: 4px solid #dc2626;
+        color: #991b1b;
+      }
+
+      .alert.warning {
+        background: #fef3c7;
+        border-left: 4px solid #d97706;
+        color: #92400e;
+      }
+
+      .alert-icon {
+        font-size: 24px;
+        margin-right: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      th {
+        background: #f8fafc;
+        color: #475569;
+        font-weight: 600;
+      }
+
+      tr:hover {
+        background: #f8fafc;
+      }
+
+      .collapsible-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .collapsible-content.active {
+        max-height: 2000px;
+      }
+
+      .toggle-icon {
+        margin-left: auto;
+        transition: transform 0.3s ease;
+      }
+
+      .toggle-icon.active {
+        transform: rotate(180deg);
+      }
+
+      .summary-box {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .summary-stats {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .summary-stat {
+        text-align: center;
+        padding: 10px;
+      }
+
+      .summary-stat-value {
+        font-size: 2.5em;
+        font-weight: bold;
+      }
+
+      .summary-stat-label {
+        font-size: 0.9em;
+        opacity: 0.9;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>📊 Informe de Pruebas de Carga</h1>
+
+      <div class="summary-box">
+        <h2 style="color: white; margin-bottom: 20px">Resumen Ejecutivo</h2>
+        <div class="summary-stats">
+          <div class="summary-stat">
+            <div class="summary-stat-value">15%</div>
+            <div class="summary-stat-label">Tasa de éxito</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-value">20</div>
+            <div class="summary-stat-label">Usuarios virtuales</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-value">6.5s</div>
+            <div class="summary-stat-label">Tiempo promedio</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert danger">
+        <span class="alert-icon">⚠️</span>
+        <div>
+          <strong>Problema Crítico Detectado:</strong> El 87% de las peticiones
+          fallaron por timeout (ETIMEDOUT). Solo 3 de 23 peticiones fueron
+          exitosas.
+        </div>
+      </div>
+
+      <!-- Usuarios Virtuales -->
+      <div class="card">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div class="icon info">👥</div>
+          <h2>Usuarios Virtuales</h2>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content active">
+          <p style="color: #64748b; margin-bottom: 15px">
+            Se crearon 20 usuarios virtuales para simular carga en el endpoint.
+            Sin embargo, el 100% de estos usuarios fallaron en completar sus
+            solicitudes.
+          </p>
+          <div class="metric-grid">
+            <div class="metric">
+              <div class="metric-label">Usuarios Creados</div>
+              <div class="metric-value">20</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Usuarios Fallidos</div>
+              <div class="metric-value" style="color: #ef4444">20</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Tasa de Fallo</div>
+              <div class="metric-value" style="color: #ef4444">100%</div>
+            </div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%; background: #ef4444">
+              100% Fallidos
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Peticiones HTTP -->
+      <div class="card">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div class="icon warning">🌐</div>
+          <h2>Peticiones HTTP</h2>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content active">
+          <p style="color: #64748b; margin-bottom: 15px">
+            Análisis del tráfico HTTP hacia el endpoint
+            <code>/engineering/structural-analysis</code>
+          </p>
+          <div class="metric-grid">
+            <div class="metric">
+              <div class="metric-label">Total Peticiones</div>
+              <div class="metric-value">23</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Respuestas Exitosas</div>
+              <div class="metric-value" style="color: #10b981">3</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Códigos 200 OK</div>
+              <div class="metric-value" style="color: #10b981">3</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Datos Descargados</div>
+              <div class="metric-value">
+                267 <span class="metric-unit">bytes</span>
+              </div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Tasa de Peticiones</div>
+              <div class="metric-value">
+                1 <span class="metric-unit">req/s</span>
+              </div>
+            </div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 13%">13% Exitosas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Errores -->
+      <div class="card">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div class="icon error">❌</div>
+          <h2>Errores de Timeout</h2>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content active">
+          <div class="alert danger">
+            <span class="alert-icon">🔥</span>
+            <div>
+              <strong>Error ETIMEDOUT:</strong> Este error indica que las
+              peticiones excedieron el tiempo máximo de espera. Esto sugiere que
+              el servidor está sobrecargado, es muy lento, o no puede manejar la
+              carga concurrente.
+            </div>
+          </div>
+          <div class="metric-grid">
+            <div class="metric" style="border-left-color: #ef4444">
+              <div class="metric-label">Total Errores ETIMEDOUT</div>
+              <div class="metric-value" style="color: #ef4444">20</div>
+            </div>
+            <div class="metric" style="border-left-color: #ef4444">
+              <div class="metric-label">Porcentaje de Errores</div>
+              <div class="metric-value" style="color: #ef4444">87%</div>
+            </div>
+          </div>
+          <p style="margin-top: 15px; color: #64748b">
+            <strong>Causas Posibles:</strong>
+          </p>
+          <ul style="margin-left: 20px; color: #64748b; margin-top: 10px">
+            <li>El servidor no puede procesar 20 peticiones concurrentes</li>
+            <li>
+              El endpoint de análisis estructural es computacionalmente
+              intensivo
+            </li>
+            <li>Falta de recursos (CPU, memoria) en el servidor</li>
+            <li>Tiempo de timeout configurado demasiado corto</li>
+            <li>Problemas de red o conectividad</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tiempos de Respuesta -->
+      <div class="card">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div class="icon success">⏱️</div>
+          <h2>Tiempos de Respuesta</h2>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content active">
+          <p style="color: #64748b; margin-bottom: 15px">
+            Análisis de las 3 peticiones exitosas. Los tiempos son muy altos,
+            indicando problemas de rendimiento.
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Métrica</th>
+                <th>Valor</th>
+                <th>Evaluación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Tiempo Mínimo</strong></td>
+                <td>3,353 ms</td>
+                <td><span style="color: #f59e0b">⚠️ Lento</span></td>
+              </tr>
+              <tr>
+                <td><strong>Tiempo Máximo</strong></td>
+                <td>9,794 ms</td>
+                <td><span style="color: #ef4444">❌ Crítico</span></td>
+              </tr>
+              <tr>
+                <td><strong>Tiempo Promedio</strong></td>
+                <td>6,504 ms</td>
+                <td><span style="color: #f59e0b">⚠️ Muy lento</span></td>
+              </tr>
+              <tr>
+                <td><strong>Mediana (P50)</strong></td>
+                <td>6,312 ms</td>
+                <td><span style="color: #f59e0b">⚠️ Muy lento</span></td>
+              </tr>
+              <tr>
+                <td><strong>Percentil 95 (P95)</strong></td>
+                <td>6,312 ms</td>
+                <td><span style="color: #f59e0b">⚠️ Muy lento</span></td>
+              </tr>
+              <tr>
+                <td><strong>Percentil 99 (P99)</strong></td>
+                <td>6,312 ms</td>
+                <td><span style="color: #f59e0b">⚠️ Muy lento</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="alert warning" style="margin-top: 15px">
+            <span class="alert-icon">💡</span>
+            <div>
+              <strong>Referencia:</strong> Un tiempo de respuesta aceptable para
+              APIs REST debería estar entre 100-500ms. Tiempos superiores a 1
+              segundo son considerados lentos.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Análisis por Períodos -->
+      <div class="card">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div class="icon info">📈</div>
+          <h2>Análisis por Períodos Intermedios</h2>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content active">
+          <p style="color: #64748b; margin-bottom: 15px">
+            El test se dividió en 3 períodos de 10 segundos cada uno. Análisis
+            de la evolución temporal:
+          </p>
+
+          <div
+            style="
+              background: #f8fafc;
+              padding: 20px;
+              border-radius: 10px;
+              margin-bottom: 15px;
+            "
+          >
+            <h3 style="color: #334155; margin-bottom: 10px">
+              📍 Período 1 (0-10s)
+            </h3>
+            <div class="metric-grid">
+              <div class="metric">
+                <div class="metric-label">Peticiones</div>
+                <div class="metric-value">22</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Exitosas</div>
+                <div class="metric-value" style="color: #10b981">2</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Tiempo Promedio</div>
+                <div class="metric-value">
+                  4,859 <span class="metric-unit">ms</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              background: #f8fafc;
+              padding: 20px;
+              border-radius: 10px;
+              margin-bottom: 15px;
+            "
+          >
+            <h3 style="color: #334155; margin-bottom: 10px">
+              📍 Período 2 (10-20s)
+            </h3>
+            <div class="metric-grid">
+              <div class="metric">
+                <div class="metric-label">Peticiones</div>
+                <div class="metric-value">1</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Exitosas</div>
+                <div class="metric-value" style="color: #10b981">1</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Errores Timeout</div>
+                <div class="metric-value" style="color: #ef4444">19</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Tiempo Promedio</div>
+                <div class="metric-value">
+                  9,794 <span class="metric-unit">ms</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: #f8fafc; padding: 20px; border-radius: 10px">
+            <h3 style="color: #334155; margin-bottom: 10px">
+              📍 Período 3 (20-30s)
+            </h3>
+            <div class="metric-grid">
+              <div class="metric">
+                <div class="metric-label">Errores Timeout</div>
+                <div class="metric-value" style="color: #ef4444">1</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Peticiones Exitosas</div>
+                <div class="metric-value">0</div>
+              </div>
+            </div>
+          </div>
+
+          <p style="margin-top: 15px; color: #64748b">
+            <strong>Observación:</strong> El rendimiento se degrada con el
+            tiempo. El primer período tuvo mejor tasa de éxito, mientras que en
+            el segundo período la mayoría de las peticiones ya habían comenzado
+            a fallar por timeout.
+          </p>
+        </div>
+      </div>
+
+      <!-- Recomendaciones -->
+      <div class="card">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div class="icon success">💡</div>
+          <h2>Recomendaciones</h2>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-content active">
+          <ol style="color: #334155; line-height: 1.8; margin-left: 20px">
+            <li>
+              <strong>Optimizar el endpoint:</strong> El análisis estructural
+              necesita optimización urgente. Considerar cacheo, procesamiento
+              asíncrono o división en tareas más pequeñas.
+            </li>
+            <li>
+              <strong>Aumentar recursos del servidor:</strong> CPU y memoria
+              adicionales podrían ayudar a manejar la carga concurrente.
+            </li>
+            <li>
+              <strong>Implementar rate limiting:</strong> Limitar peticiones
+              concurrentes para evitar sobrecarga del servidor.
+            </li>
+            <li>
+              <strong>Configurar timeouts adecuados:</strong> Si el
+              procesamiento es largo, aumentar los timeouts o implementar
+              polling/webhooks.
+            </li>
+            <li>
+              <strong>Implementar balanceo de carga:</strong> Distribuir
+              peticiones entre múltiples instancias del servidor.
+            </li>
+            <li>
+              <strong>Monitoreo continuo:</strong> Implementar APM (Application
+              Performance Monitoring) para identificar cuellos de botella.
+            </li>
+            <li>
+              <strong>Pruebas incrementales:</strong> Realizar tests con carga
+              gradual (5, 10, 15 usuarios) para identificar el punto de quiebre.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleCard(header) {
+        const content = header.nextElementSibling;
+        const icon = header.querySelector(".toggle-icon");
+
+        content.classList.toggle("active");
+        icon.classList.toggle("active");
+      }
+
+      // Animación inicial de las barras de progreso
+      window.addEventListener("load", function () {
+        const progressBars = document.querySelectorAll(".progress-fill");
+        progressBars.forEach((bar) => {
+          const width = bar.style.width;
+          bar.style.width = "0";
+          setTimeout(() => {
+            bar.style.width = width;
+          }, 100);
+        });
+      });
+    </script>
+  </body>
+</html>

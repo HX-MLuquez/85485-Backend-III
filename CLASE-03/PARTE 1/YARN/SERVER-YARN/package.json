@@ -1,0 +1,14 @@
+{
+  "name": "SERVER-YARN",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --watch app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "moment": "^2.30.1"
+  }
+}

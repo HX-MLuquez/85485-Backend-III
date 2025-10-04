@@ -1,0 +1,15 @@
+<div class="container">
+  <h2>Star Wars Characters</h2>
+  <hr>
+  <ul>
+    {{#each characters}}
+      <li class="card">
+        <div>{{this.name}}</div>
+        <img src="{{this.image}}" alt="{{this.name}}">
+        <p><strong>Homeworld:</strong> {{this.homeworld}}</p>
+        <p><strong>Species:</strong> {{this.species}}</p>
+      </li>
+    {{/each}}
+  </ul>
+  <a href="/">Home</a>
+</div>
