@@ -98,6 +98,12 @@ minikube service app-users-create-service
 minikube service app-users-create-service --url
 ```
 
+```bash
+minikube service mza-app-users-service
+# o para obtener solo la URL:
+minikube service mza-app-users-service --url
+```
+
 🔑 **Este comando es clave** para que Minikube exponga el servicio.
 
 - Expone servicios de tipo `NodePort` o `LoadBalancer`.
@@ -145,6 +151,15 @@ app-users-create-deployment-c64777c97-w4nvf       1/1     Running   1          4
 ```
 
 ---
+
+### Acceder a los puertos donde se levanta el servicio usando Minikube
+
+
+```bash
+minikube service app-users-create-service
+```
+
+
 
 ## 📝 Notas Finales
 

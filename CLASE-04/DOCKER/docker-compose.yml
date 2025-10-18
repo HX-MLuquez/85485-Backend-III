@@ -1,0 +1,66 @@
+# version: '3.8'  # the attribute `version` is obsolete
+# services:
+#   app:
+#     container_name: nombre-contenedor  # Nombre del contenedor, útil para detener o inspeccionar luego
+#     build:
+#       context: .                       # Directorio donde está el Dockerfile
+#       dockerfile: Dockerfile          # (opcional si se llama "Dockerfile" por defecto)
+#     image: nombre-imagen              # Nombre personalizado para la imagen que se construye
+#     ports:
+#       - "8080:3000"                   # Mapea el puerto 3000 del contenedor al 8080 de tu máquina
+#     restart: unless-stopped           # Reinicia automáticamente si se cae, excepto si fue detenido manualmente
+#     environment:
+#       - NODE_ENV=production           # Variables de entorno (puedes agregar más aquí)
+#     # env_file:                       # Descomenta esta línea si usas un archivo .env
+#     #   - .env
+#     volumes:
+#       - .:/app                        # Sobre-escribe el código fuente en el contenedor
+#       - /app/node_modules             # Evita que se sobre-escriba la carpeta node_modules
+#     working_dir: /app                 # Directorio de trabajo dentro del contenedor
+#     command: npm start                # Comando que corre tu app (ajústalo según tu caso)
+
+
+# Acción	
+# Destruir contenedor anterior | docker compose down   -> equivalente a docker rm -f nombre-contenedor
+# Construir imagen             | docker compose build
+# Levantar contenedor          | docker compose up -d
+
+# Comandos
+# Construir imagen	              |  docker compose build
+# Levantar contenedor	            |  docker compose up -d
+# Detener y eliminar contenedores |  docker compose down
+# Ver logs	                      |  docker compose logs -f
+
+#* .yaml para crear dos contenedores: uno para la app y otro para MongoDB
+services:
+  mongo:
+    image: mongo:6
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+
+  app:
+    container_name: nombre-contenedor
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nombre-imagen
+    ports:
+      - "8080:3000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/logindb  # URL para conectar a Mongo
+    volumes:
+      - .:/app
+      - /app/node_modules
+    working_dir: /app
+    command: npm start
+    depends_on:
+      - mongo  # Asegura que Mongo arranque antes
+
+volumes:
+  mongo-data:

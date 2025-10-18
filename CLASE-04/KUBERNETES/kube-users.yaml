@@ -1,0 +1,45 @@
+# ==============================================================
+# SERVICE: Exponer el deployment (en la parte superior)
+# ==============================================================
+apiVersion: v1
+kind: Service 
+metadata:
+  name: aplication-users-service
+spec:
+  selector:
+    app: aplication-users
+  ports:
+    - port: 80 # Puerto del service
+      targetPort: 3000 # Puerto del contenedor
+  type: LoadBalancer # Esto refiere a que hace con las request
+
+---
+# ==============================================================
+# DEPLOYMENT: Despliegue de la app - PODS
+# ==============================================================
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: aplication-users-deployment
+  labels: 
+    app: aplication-users
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aplication-users
+  template:
+    metadata:
+      labels:
+        app: aplication-users
+    spec:
+      containers:
+        - name: aplication-users
+          image: mauricio776/aplication-users:1.0.0-lts 
+          ports: 
+            - containerPort: 3000 # puerto interno
+          env:
+            - name: NODE_ENV
+              value: "production"
+          imagePullPolicy:  Never
+          #imagePullPolicy: Always

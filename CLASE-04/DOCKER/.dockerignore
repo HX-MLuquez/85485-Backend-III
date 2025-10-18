@@ -1,0 +1,21 @@
+# Dependencias
+node_modules
+
+# Builds
+dist
+build
+coverage
+logs
+tmp
+
+# Git y debug
+.git
+npm-debug.log
+
+# Coverage
+.coverage
+.coverage.*
+
+# Archivos sensibles
+.env
+.aws

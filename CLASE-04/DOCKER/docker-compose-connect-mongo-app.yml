@@ -1,0 +1,32 @@
+services:
+  mongo:
+    image: mongo:6
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+
+  app:
+    container_name: nombre-contenedor
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nombre-imagen
+    ports:
+      - "8080:3000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/logindb  # URL para conectar a Mongo
+    volumes:
+      - .:/app
+      - /app/node_modules
+    working_dir: /app
+    command: npm start
+    depends_on:
+      - mongo  # Asegura que Mongo arranque antes
+
+volumes:
+  mongo-data:

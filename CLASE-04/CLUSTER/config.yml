@@ -1,0 +1,25 @@
+config:
+  target: 'http://localhost:3000'
+  plugins:
+    metrics-by-endpoint: {}
+  phases:
+    - duration: 10            # Duración total del test: 20 segundos
+      arrivalRate: 5          # 5 nuevas peticiones por segundo
+      name: "Prueba Brute Force Hash en Cluster"
+scenarios:
+  - name: "Brute hash attack simulation"
+    flow:
+      - get:
+          url: "/engineering/brute-hash"
+
+# npm start (desde teminal Linux)
+# artillery run config.yml --output resultadoBruteHashB.json
+# artillery report resultadoBruteHash.json -o informeRegistroBruteHash.html
+
+# Clustering con Node.js 
+# Este test permite observar cómo se distribuye la carga entre los procesos hijos
+# El plugin metrics-by-endpoint te da métricas detalladas por ruta
+
+# * Cortar un worker (desde nueva terminal Linux)
+# ps aux | grep node
+# kill numberPID
