@@ -1,818 +1,649 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AdoptMe API Documentation</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #fafafa;
-            color: #333;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem 2rem 3rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background: #fafafa;
+        color: #333;
+      }
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem 2rem 3rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .header p {
+        font-size: 1.1rem;
+        opacity: 0.95;
+      }
+      .container {
+        max-width: 1200px;
+        margin: -2rem auto 2rem;
+        padding: 0 2rem;
+      }
+      .info-card {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .info-card h2 {
+        color: #667eea;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+      }
+      .base-url {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        margin: 1rem 0;
+        border-left: 4px solid #667eea;
+      }
+      .nav-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+      .nav-tab {
+        background: white;
+        border: 2px solid #e0e0e0;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 500;
+      }
+      .nav-tab:hover {
+        border-color: #667eea;
+        color: #667eea;
+      }
+      .nav-tab.active {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+      }
+      .section {
+        display: none;
+      }
+      .section.active {
+        display: block;
+      }
+      .endpoint {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border-left: 4px solid #667eea;
+      }
+      .endpoint-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+      .method {
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        min-width: 70px;
+        text-align: center;
+      }
+      .method.get {
+        background: #61affe;
+        color: white;
+      }
+      .method.post {
+        background: #49cc90;
+        color: white;
+      }
+      .method.put {
+        background: #fca130;
+        color: white;
+      }
+      .method.delete {
+        background: #f93e3e;
+        color: white;
+      }
+      .endpoint-path {
+        font-family: "Courier New", monospace;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+      }
+      .endpoint-description {
+        color: #666;
+        margin-bottom: 1rem;
+        line-height: 1.6;
+      }
+      .params-section {
+        margin-top: 1.5rem;
+      }
+      .params-title {
+        font-weight: 600;
+        color: #667eea;
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+      }
+      .param {
+        background: #f8f9fa;
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+        border-radius: 4px;
+        border-left: 3px solid #667eea;
+      }
+      .param-name {
+        font-family: "Courier New", monospace;
+        font-weight: 600;
+        color: #333;
+      }
+      .param-type {
+        color: #764ba2;
+        font-size: 0.85rem;
+        font-style: italic;
+      }
+      .param-required {
+        background: #f93e3e;
+        color: white;
+        padding: 0.2rem 0.5rem;
+        border-radius: 3px;
+        font-size: 0.75rem;
+        margin-left: 0.5rem;
+      }
+      .param-optional {
+        background: #49cc90;
+        color: white;
+        padding: 0.2rem 0.5rem;
+        border-radius: 3px;
+        font-size: 0.75rem;
+        margin-left: 0.5rem;
+      }
+      .param-desc {
+        color: #666;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+      }
+      .code-block {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 1rem;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        font-size: 0.9rem;
+        overflow-x: auto;
+        margin-top: 0.75rem;
+      }
+      .response-section {
+        margin-top: 1.5rem;
+      }
+      .status-code {
+        background: #49cc90;
+        color: white;
+        padding: 0.3rem 0.6rem;
+        border-radius: 3px;
+        font-weight: 600;
+        display: inline-block;
+        margin-right: 0.5rem;
+      }
+      .models-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+      .model-card {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+      .model-card h3 {
+        color: #667eea;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+      }
+      .schema-field {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #e0e0e0;
+      }
+      .schema-field:last-child {
+        border-bottom: none;
+      }
+      .field-name {
+        font-family: "Courier New", monospace;
+        font-weight: 600;
+        color: #333;
+      }
+      .field-type {
+        color: #764ba2;
+        font-size: 0.85rem;
+      }
+      @media (max-width: 768px) {
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+          font-size: 2rem;
         }
-
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.95;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: -2rem auto 2rem;
-            padding: 0 2rem;
-        }
-
-        .info-card {
-            background: white;
-            border-radius: 8px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .info-card h2 {
-            color: #667eea;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .base-url {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            margin: 1rem 0;
-            border-left: 4px solid #667eea;
-        }
-
-        .nav-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .nav-tab {
-            background: white;
-            border: 2px solid #e0e0e0;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-
-        .nav-tab:hover {
-            border-color: #667eea;
-            color: #667eea;
-        }
-
-        .nav-tab.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        .endpoint {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 4px solid #667eea;
-        }
-
         .endpoint-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
+          flex-direction: column;
+          align-items: flex-start;
         }
-
-        .method {
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            min-width: 70px;
-            text-align: center;
+        .nav-tabs {
+          flex-direction: column;
         }
-
-        .method.get { background: #61affe; color: white; }
-        .method.post { background: #49cc90; color: white; }
-        .method.put { background: #fca130; color: white; }
-        .method.delete { background: #f93e3e; color: white; }
-
-        .endpoint-path {
-            font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #333;
+        .nav-tab {
+          width: 100%;
         }
-
-        .endpoint-description {
-            color: #666;
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-
-        .params-section {
-            margin-top: 1.5rem;
-        }
-
-        .params-title {
-            font-weight: 600;
-            color: #667eea;
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
-        }
-
-        .param {
-            background: #f8f9fa;
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border-radius: 4px;
-            border-left: 3px solid #667eea;
-        }
-
-        .param-name {
-            font-family: 'Courier New', monospace;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .param-type {
-            color: #764ba2;
-            font-size: 0.85rem;
-            font-style: italic;
-        }
-
-        .param-required {
-            background: #f93e3e;
-            color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 3px;
-            font-size: 0.75rem;
-            margin-left: 0.5rem;
-        }
-
-        .param-optional {
-            background: #49cc90;
-            color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 3px;
-            font-size: 0.75rem;
-            margin-left: 0.5rem;
-        }
-
-        .param-desc {
-            color: #666;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .code-block {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 1rem;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            overflow-x: auto;
-            margin-top: 0.75rem;
-        }
-
-        .response-section {
-            margin-top: 1.5rem;
-        }
-
-        .status-code {
-            background: #49cc90;
-            color: white;
-            padding: 0.3rem 0.6rem;
-            border-radius: 3px;
-            font-weight: 600;
-            display: inline-block;
-            margin-right: 0.5rem;
-        }
-
-        .models-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .model-card {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .model-card h3 {
-            color: #667eea;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .schema-field {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .schema-field:last-child {
-            border-bottom: none;
-        }
-
-        .field-name {
-            font-family: 'Courier New', monospace;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .field-type {
-            color: #764ba2;
-            font-size: 0.85rem;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .endpoint-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .nav-tabs {
-                flex-direction: column;
-            }
-            
-            .nav-tab {
-                width: 100%;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="header">
-        <h1>🐾 AdoptMe API</h1>
-        <p>Documentación completa de la API REST para el sistema de adopción de mascotas</p>
+      <h1>🐾 AdoptMe API</h1>
+      <p>
+        Documentación completa de la API REST para el sistema de adopción de
+        mascotas
+      </p>
     </div>
 
     <div class="container">
-        <div class="info-card">
-            <h2>Información General</h2>
-            <p>Esta API proporciona endpoints para gestionar usuarios, mascotas, adopciones y sesiones en la plataforma AdoptMe.</p>
-            <div class="base-url">
-                <strong>Base URL:</strong> http://localhost:8080/api
+      <div class="info-card">
+        <h2>Información General</h2>
+        <p>
+          Esta API proporciona endpoints para gestionar usuarios, mascotas,
+          adopciones y sesiones en la plataforma AdoptMe.
+        </p>
+        <div class="base-url">
+          <strong>Base URL:</strong> http://localhost:8080/api
+        </div>
+      </div>
+
+      <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showSection('users')">
+          👤 Users
+        </button>
+        <button class="nav-tab" onclick="showSection('pets')">🐕 Pets</button>
+        <button class="nav-tab" onclick="showSection('adoptions')">
+          🏠 Adoptions
+        </button>
+        <button class="nav-tab" onclick="showSection('sessions')">
+          🔐 Sessions
+        </button>
+        <button class="nav-tab" onclick="showSection('models')">
+          📋 Models
+        </button>
+      </div>
+
+      <div id="users" class="section active">
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="endpoint-path">/users</span>
+          </div>
+          <p class="endpoint-description">
+            Obtiene la lista de todos los usuarios registrados.
+          </p>
+          <div class="response-section">
+            <div class="params-title">Respuesta exitosa</div>
+            <span class="status-code">200</span><span>Array de usuarios</span>
+            <div class="code-block">
+              {"status":"success","payload":[{"_id":"507f1f77bcf86cd799439011","first_name":"Juan","last_name":"Pérez","email":"juan@example.com","role":"user","pets":[]}]}
             </div>
+          </div>
         </div>
 
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="showSection('users')">👤 Users</button>
-            <button class="nav-tab" onclick="showSection('pets')">🐕 Pets</button>
-            <button class="nav-tab" onclick="showSection('adoptions')">🏠 Adoptions</button>
-            <button class="nav-tab" onclick="showSection('sessions')">🔐 Sessions</button>
-            <button class="nav-tab" onclick="showSection('models')">📋 Models</button>
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="endpoint-path">/users/:uid</span>
+          </div>
+          <p class="endpoint-description">
+            Obtiene información de un usuario específico.
+          </p>
+          <div class="params-section">
+            <div class="params-title">Parámetros de ruta</div>
+            <div class="param">
+              <span class="param-name">uid</span>
+              <span class="param-type">string</span>
+              <span class="param-required">REQUERIDO</span>
+              <div class="param-desc">ID único del usuario</div>
+            </div>
+          </div>
         </div>
 
-        <!-- USERS SECTION -->
-        <div id="users" class="section active">
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method get">GET</span>
-                    <span class="endpoint-path">/users</span>
-                </div>
-                <p class="endpoint-description">Obtiene la lista de todos los usuarios registrados en el sistema.</p>
-                
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Array de usuarios</span>
-                    <div class="code-block">{
-  "status": "success",
-  "payload": [
-    {
-      "_id": "507f1f77bcf86cd799439011",
-      "first_name": "Juan",
-      "last_name": "Pérez",
-      "email": "juan@example.com",
-      "role": "user",
-      "pets": []
-    }
-  ]
-}</div>
-                </div>
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method put">PUT</span>
+            <span class="endpoint-path">/users/:uid</span>
+          </div>
+          <p class="endpoint-description">
+            Actualiza información de un usuario.
+          </p>
+          <div class="params-section">
+            <div class="params-title">Body (JSON)</div>
+            <div class="param">
+              <span class="param-name">first_name</span>
+              <span class="param-type">string</span>
+              <span class="param-optional">OPCIONAL</span>
             </div>
-
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method get">GET</span>
-                    <span class="endpoint-path">/users/:uid</span>
-                </div>
-                <p class="endpoint-description">Obtiene la información de un usuario específico por su ID.</p>
-                
-                <div class="params-section">
-                    <div class="params-title">Parámetros de ruta</div>
-                    <div class="param">
-                        <span class="param-name">uid</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                        <div class="param-desc">ID único del usuario (MongoDB ObjectId)</div>
-                    </div>
-                </div>
-
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Objeto usuario</span>
-                    <div class="code-block">{
-  "status": "success",
-  "payload": {
-    "_id": "507f1f77bcf86cd799439011",
-    "first_name": "Juan",
-    "last_name": "Pérez",
-    "email": "juan@example.com",
-    "role": "user",
-    "pets": []
-  }
-}</div>
-                </div>
+            <div class="param">
+              <span class="param-name">last_name</span>
+              <span class="param-type">string</span>
+              <span class="param-optional">OPCIONAL</span>
             </div>
-
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method put">PUT</span>
-                    <span class="endpoint-path">/users/:uid</span>
-                </div>
-                <p class="endpoint-description">Actualiza la información de un usuario existente.</p>
-                
-                <div class="params-section">
-                    <div class="params-title">Parámetros de ruta</div>
-                    <div class="param">
-                        <span class="param-name">uid</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                        <div class="param-desc">ID único del usuario</div>
-                    </div>
-                </div>
-
-                <div class="params-section">
-                    <div class="params-title">Body (JSON)</div>
-                    <div class="param">
-                        <span class="param-name">first_name</span>
-                        <span class="param-type">string</span>
-                        <span class="param-optional">OPCIONAL</span>
-                        <div class="param-desc">Nuevo nombre del usuario</div>
-                    </div>
-                    <div class="param">
-                        <span class="param-name">last_name</span>
-                        <span class="param-type">string</span>
-                        <span class="param-optional">OPCIONAL</span>
-                        <div class="param-desc">Nuevo apellido del usuario</div>
-                    </div>
-                    <div class="param">
-                        <span class="param-name">email</span>
-                        <span class="param-type">string</span>
-                        <span class="param-optional">OPCIONAL</span>
-                        <div class="param-desc">Nueva dirección de correo electrónico</div>
-                    </div>
-                </div>
-
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Usuario actualizado</span>
-                </div>
+            <div class="param">
+              <span class="param-name">email</span>
+              <span class="param-type">string</span>
+              <span class="param-optional">OPCIONAL</span>
             </div>
-
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method delete">DELETE</span>
-                    <span class="endpoint-path">/users/:uid</span>
-                </div>
-                <p class="endpoint-description">Elimina un usuario del sistema de forma permanente.</p>
-                
-                <div class="params-section">
-                    <div class="params-title">Parámetros de ruta</div>
-                    <div class="param">
-                        <span class="param-name">uid</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                        <div class="param-desc">ID único del usuario a eliminar</div>
-                    </div>
-                </div>
-
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Usuario eliminado</span>
-                </div>
-            </div>
+          </div>
         </div>
 
-        <!-- PETS SECTION -->
-        <div id="pets" class="section">
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method get">GET</span>
-                    <span class="endpoint-path">/pets</span>
-                </div>
-                <p class="endpoint-description">Obtiene la lista completa de mascotas disponibles.</p>
-                
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Array de mascotas</span>
-                    <div class="code-block">{
-  "status": "success",
-  "payload": [
-    {
-      "_id": "507f191e810c19729de860ea",
-      "name": "Max",
-      "specie": "Perro",
-      "birthDate": "2020-05-15",
-      "adopted": false,
-      "image": "max.jpg"
-    }
-  ]
-}</div>
-                </div>
-            </div>
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method delete">DELETE</span>
+            <span class="endpoint-path">/users/:uid</span>
+          </div>
+          <p class="endpoint-description">Elimina un usuario del sistema.</p>
+        </div>
+      </div>
 
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method post">POST</span>
-                    <span class="endpoint-path">/pets</span>
-                </div>
-                <p class="endpoint-description">Crea una nueva mascota sin imagen.</p>
-                
-                <div class="params-section">
-                    <div class="params-title">Body (JSON)</div>
-                    <div class="param">
-                        <span class="param-name">name</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                        <div class="param-desc">Nombre de la mascota</div>
-                    </div>
-                    <div class="param">
-                        <span class="param-name">specie</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                        <div class="param-desc">Especie (Perro, Gato, etc.)</div>
-                    </div>
-                    <div class="param">
-                        <span class="param-name">birthDate</span>
-                        <span class="param-type">date</span>
-                        <span class="param-optional">OPCIONAL</span>
-                        <div class="param-desc">Fecha de nacimiento</div>
-                    </div>
-                </div>
-
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Mascota creada</span>
-                </div>
-            </div>
-
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method post">POST</span>
-                    <span class="endpoint-path">/pets/withimage</span>
-                </div>
-                <p class="endpoint-description">Crea una nueva mascota con imagen.</p>
-                
-                <div class="params-section">
-                    <div class="params-title">Body (multipart/form-data)</div>
-                    <div class="param">
-                        <span class="param-name">name</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                    </div>
-                    <div class="param">
-                        <span class="param-name">specie</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                    </div>
-                    <div class="param">
-                        <span class="param-name">image</span>
-                        <span class="param-type">file</span>
-                        <span class="param-required">REQUERIDO</span>
-                        <div class="param-desc">Archivo de imagen</div>
-                    </div>
-                </div>
-
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Mascota creada con imagen</span>
-                </div>
-            </div>
-
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method put">PUT</span>
-                    <span class="endpoint-path">/pets/:pid</span>
-                </div>
-                <p class="endpoint-description">Actualiza información de una mascota.</p>
-                
-                <div class="params-section">
-                    <div class="params-title">Parámetros de ruta</div>
-                    <div class="param">
-                        <span class="param-name">pid</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                        <div class="param-desc">ID de la mascota</div>
-                    </div>
-                </div>
-
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Mascota actualizada</span>
-                </div>
-            </div>
-
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method delete">DELETE</span>
-                    <span class="endpoint-path">/pets/:pid</span>
-                </div>
-                <p class="endpoint-description">Elimina una mascota del sistema.</p>
-                
-                <div class="params-section">
-                    <div class="params-title">Parámetros de ruta</div>
-                    <div class="param">
-                        <span class="param-name">pid</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                    </div>
-                </div>
-
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Mascota eliminada</span>
-                </div>
-            </div>
+      <div id="pets" class="section">
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="endpoint-path">/pets</span>
+          </div>
+          <p class="endpoint-description">
+            Obtiene todas las mascotas disponibles.
+          </p>
         </div>
 
-        <!-- ADOPTIONS SECTION -->
-        <div id="adoptions" class="section">
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method get">GET</span>
-                    <span class="endpoint-path">/adoptions</span>
-                </div>
-                <p class="endpoint-description">Obtiene todas las adopciones.</p>
-                
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Array de adopciones</span>
-                    <div class="code-block">{
-  "status": "success",
-  "payload": [
-    {
-      "_id": "507f1f77bcf86cd799439012",
-      "owner": "507f1f77bcf86cd799439011",
-      "pet": "507f191e810c19729de860ea"
-    }
-  ]
-}</div>
-                </div>
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method post">POST</span>
+            <span class="endpoint-path">/pets</span>
+          </div>
+          <p class="endpoint-description">Crea una nueva mascota sin imagen.</p>
+          <div class="params-section">
+            <div class="params-title">Body (JSON)</div>
+            <div class="param">
+              <span class="param-name">name</span>
+              <span class="param-type">string</span>
+              <span class="param-required">REQUERIDO</span>
             </div>
-
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method get">GET</span>
-                    <span class="endpoint-path">/adoptions/:aid</span>
-                </div>
-                <p class="endpoint-description">Obtiene una adopción específica.</p>
-                
-                <div class="params-section">
-                    <div class="params-title">Parámetros de ruta</div>
-                    <div class="param">
-                        <span class="param-name">aid</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                        <div class="param-desc">ID de la adopción</div>
-                    </div>
-                </div>
-
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Objeto adopción</span>
-                </div>
+            <div class="param">
+              <span class="param-name">specie</span>
+              <span class="param-type">string</span>
+              <span class="param-required">REQUERIDO</span>
             </div>
-
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method post">POST</span>
-                    <span class="endpoint-path">/adoptions/:uid/:pid</span>
-                </div>
-                <p class="endpoint-description">Crea una nueva adopción.</p>
-                
-                <div class="params-section">
-                    <div class="params-title">Parámetros de ruta</div>
-                    <div class="param">
-                        <span class="param-name">uid</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                        <div class="param-desc">ID del usuario adoptante</div>
-                    </div>
-                    <div class="param">
-                        <span class="param-name">pid</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                        <div class="param-desc">ID de la mascota</div>
-                    </div>
-                </div>
-
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Adopción creada</span>
-                </div>
-            </div>
+          </div>
         </div>
 
-        <!-- SESSIONS SECTION -->
-        <div id="sessions" class="section">
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method post">POST</span>
-                    <span class="endpoint-path">/sessions/register</span>
-                </div>
-                <p class="endpoint-description">Registra un nuevo usuario.</p>
-                
-                <div class="params-section">
-                    <div class="params-title">Body (JSON)</div>
-                    <div class="param">
-                        <span class="param-name">first_name</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                    </div>
-                    <div class="param">
-                        <span class="param-name">last_name</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                    </div>
-                    <div class="param">
-                        <span class="param-name">email</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                    </div>
-                    <div class="param">
-                        <span class="param-name">password</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                    </div>
-                </div>
-
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Usuario registrado</span>
-                </div>
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method post">POST</span>
+            <span class="endpoint-path">/pets/withimage</span>
+          </div>
+          <p class="endpoint-description">Crea una mascota con imagen.</p>
+          <div class="params-section">
+            <div class="params-title">Body (multipart/form-data)</div>
+            <div class="param">
+              <span class="param-name">image</span>
+              <span class="param-type">file</span>
+              <span class="param-required">REQUERIDO</span>
             </div>
-
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method post">POST</span>
-                    <span class="endpoint-path">/sessions/login</span>
-                </div>
-                <p class="endpoint-description">Inicia sesión.</p>
-                
-                <div class="params-section">
-                    <div class="params-title">Body (JSON)</div>
-                    <div class="param">
-                        <span class="param-name">email</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                    </div>
-                    <div class="param">
-                        <span class="param-name">password</span>
-                        <span class="param-type">string</span>
-                        <span class="param-required">REQUERIDO</span>
-                    </div>
-                </div>
-
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Sesión iniciada</span>
-                </div>
-            </div>
-
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method get">GET</span>
-                    <span class="endpoint-path">/sessions/current</span>
-                </div>
-                <p class="endpoint-description">Obtiene el usuario actual autenticado.</p>
-
-                <div class="response-section">
-                    <div class="params-title">Respuesta exitosa</div>
-                    <span class="status-code">200</span>
-                    <span>Usuario actual</span>
-                </div>
-            </div>
-
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method get">GET</span>
-                    <span class="endpoint-path">/sessions/unprotectedLogin</span>
-                </div>
-                <p class="endpoint-description">Login sin protección (desarrollo).</p>
-            </div>
-
-            <div class="endpoint">
-                <div class="endpoint-header">
-                    <span class="method get">GET</span>
-                    <span class="endpoint-path">/sessions/unprotectedCurrent</span>
-                </div>
-                <p class="endpoint-description">Sesión actual sin protección (desarrollo).</p>
-            </div>
+          </div>
         </div>
 
-        <!-- MODELS SECTION -->
-        <div id="models" class="section">
-            <div class="models-grid">
-                <div class="model-card">
-                    <h3>👤 User Model</h3>
-                    <div class="schema-field">
-                        <span class="field-name">_id</span>
-                        <span class="field-type">ObjectId</span>
-                    </div>
-                    <div class="schema-field">
-                        <span class="field-name">first_name</span>
-                        <span class="field-type">String</span>
-                        <span class="param-required">REQUERIDO</span>
-                    </div>
-                    <div class="schema-field">
-                        <span class="field-name">last_name</span>
-                        <span class="field-type">String</span>
-                        <span class="param-required">REQUERIDO</span>
-                    </div>
-                    <div class="schema-field">
-                        <span class="field-name">email</span>
-                        <span class="field-type">String</span>
-                        <span class="param-required">ÚNICO</span>
-                    </div>
-                    <div class="schema-field">
-                        <span class="field-name">password</span>
-                        <span class="field-type">String</span>
-                        <span class="param-required">REQUERIDO</span>
-                    </div>
-                    <div class="schema-field">
-                        <span class="field-name">role</span>
-                        <span class="field-type">String</span>
-                        <div class="param-desc">Default: "user"</div>
-                    </div>
-                    <div class="schema-field">
-                        <span class="field-name">pets</span>
-                        <span class="field-type">Array[ObjectId]</span>
-                        <div class="param-desc">Ref: Pets</div>
-                    </div>
-                </div>
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method put">PUT</span>
+            <span class="endpoint-path">/pets/:pid</span>
+          </div>
+          <p class="endpoint-description">Actualiza una mascota.</p>
+        </div>
 
-                <div class="model-card">
-                    <h3>🐕 Pet Model</h3>
-                    <div class="schema-field">
-                        <span class="field-name">_id</span>
-                        <span class="field-type">ObjectId</span>
-                    </div>
-                    
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method delete">DELETE</span>
+            <span class="endpoint-path">/pets/:pid</span>
+          </div>
+          <p class="endpoint-description">Elimina una mascota.</p>
+        </div>
+      </div>
+
+      <div id="adoptions" class="section">
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="endpoint-path">/adoptions</span>
+          </div>
+          <p class="endpoint-description">Obtiene todas las adopciones.</p>
+        </div>
+
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="endpoint-path">/adoptions/:aid</span>
+          </div>
+          <p class="endpoint-description">Obtiene una adopción específica.</p>
+        </div>
+
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method post">POST</span>
+            <span class="endpoint-path">/adoptions/:uid/:pid</span>
+          </div>
+          <p class="endpoint-description">Crea una nueva adopción.</p>
+          <div class="params-section">
+            <div class="params-title">Parámetros de ruta</div>
+            <div class="param">
+              <span class="param-name">uid</span>
+              <span class="param-type">string</span>
+              <span class="param-required">REQUERIDO</span>
+              <div class="param-desc">ID del usuario</div>
+            </div>
+            <div class="param">
+              <span class="param-name">pid</span>
+              <span class="param-type">string</span>
+              <span class="param-required">REQUERIDO</span>
+              <div class="param-desc">ID de la mascota</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="sessions" class="section">
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method post">POST</span>
+            <span class="endpoint-path">/sessions/register</span>
+          </div>
+          <p class="endpoint-description">Registra un nuevo usuario.</p>
+          <div class="params-section">
+            <div class="params-title">Body (JSON)</div>
+            <div class="param">
+              <span class="param-name">first_name</span>
+              <span class="param-type">string</span>
+              <span class="param-required">REQUERIDO</span>
+            </div>
+            <div class="param">
+              <span class="param-name">last_name</span>
+              <span class="param-type">string</span>
+              <span class="param-required">REQUERIDO</span>
+            </div>
+            <div class="param">
+              <span class="param-name">email</span>
+              <span class="param-type">string</span>
+              <span class="param-required">REQUERIDO</span>
+            </div>
+            <div class="param">
+              <span class="param-name">password</span>
+              <span class="param-type">string</span>
+              <span class="param-required">REQUERIDO</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method post">POST</span>
+            <span class="endpoint-path">/sessions/login</span>
+          </div>
+          <p class="endpoint-description">Inicia sesión.</p>
+          <div class="params-section">
+            <div class="params-title">Body (JSON)</div>
+            <div class="param">
+              <span class="param-name">email</span>
+              <span class="param-type">string</span>
+              <span class="param-required">REQUERIDO</span>
+            </div>
+            <div class="param">
+              <span class="param-name">password</span>
+              <span class="param-type">string</span>
+              <span class="param-required">REQUERIDO</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="endpoint-path">/sessions/current</span>
+          </div>
+          <p class="endpoint-description">Obtiene el usuario actual.</p>
+        </div>
+      </div>
+
+      <div id="models" class="section">
+        <div class="models-grid">
+          <div class="model-card">
+            <h3>👤 User Model</h3>
+            <div class="schema-field">
+              <span class="field-name">_id</span>
+              <span class="field-type">ObjectId</span>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">first_name</span>
+              <span class="field-type">String</span>
+              <span class="param-required">REQUERIDO</span>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">last_name</span>
+              <span class="field-type">String</span>
+              <span class="param-required">REQUERIDO</span>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">email</span>
+              <span class="field-type">String</span>
+              <span class="param-required">ÚNICO</span>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">password</span>
+              <span class="field-type">String</span>
+              <span class="param-required">REQUERIDO</span>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">role</span>
+              <span class="field-type">String</span>
+              <div class="param-desc">Default: "user"</div>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">pets</span>
+              <span class="field-type">Array[ObjectId]</span>
+              <div class="param-desc">Ref: Pets</div>
+            </div>
+          </div>
+
+          <div class="model-card">
+            <h3>🐕 Pet Model</h3>
+            <div class="schema-field">
+              <span class="field-name">_id</span>
+              <span class="field-type">ObjectId</span>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">name</span>
+              <span class="field-type">String</span>
+              <span class="param-required">REQUERIDO</span>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">specie</span>
+              <span class="field-type">String</span>
+              <span class="param-required">REQUERIDO</span>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">birthDate</span>
+              <span class="field-type">Date</span>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">adopted</span>
+              <span class="field-type">Boolean</span>
+              <div class="param-desc">Default: false</div>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">owner</span>
+              <span class="field-type">ObjectId</span>
+              <div class="param-desc">Ref: Users</div>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">image</span>
+              <span class="field-type">String</span>
+            </div>
+          </div>
+
+          <div class="model-card">
+            <h3>🏠 Adoption Model</h3>
+            <div class="schema-field">
+              <span class="field-name">_id</span>
+              <span class="field-type">ObjectId</span>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">owner</span>
+              <span class="field-type">ObjectId</span>
+              <span class="param-required">REQUERIDO</span>
+              <div class="param-desc">Ref: Users</div>
+            </div>
+            <div class="schema-field">
+              <span class="field-name">pet</span>
+              <span class="field-type">ObjectId</span>
+              <span class="param-required">REQUERIDO</span>
+              <div class="param-desc">Ref: Pets</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showSection(id) {
+        document
+          .querySelectorAll(".section")
+          .forEach((s) => s.classList.remove("active"));
+        document
+          .querySelectorAll(".nav-tab")
+          .forEach((t) => t.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+        event.target.classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    </script>
+  </body>
+</html>
