@@ -1,0 +1,12 @@
+<div>
+    <h1>Registrar usuario</h1>
+    <form action="/api/sessions/register" method="post" >
+        <label>Email</label>
+        {{!-- Error - debe ser type email --}}
+        <input name="email">
+        <label>Password</label>
+        {{!-- Error - debe ser type password --}}
+        <input name="password" type="password">
+        <button>Enviar</button>
+    </form>
+</div>

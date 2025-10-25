@@ -1,0 +1,82 @@
+# app.use("/api/pets", petsRouter);
+
+# router.get('/',petsController.getAllPets);
+# router.post('/',petsController.createPet);
+# router.post('/withimage',uploader.single('image'), petsController.createPetWithImage);
+# router.put('/:pid',petsController.updatePet);
+# router.delete('/:pid',petsController.deletePet);
+
+paths:
+  /api/pets:
+    get:
+      summary: Obtener todas las mascotas
+      tags:
+        - Pets
+    post:
+      summary: Crear una mascota 
+      tags:
+        - Pets
+  /api/pets/withimage:
+    post:
+      summary: Crear una mascota con imagen
+      tags:
+        - Pets
+  /api/pets/{pid}:
+    put:
+      summary: Actualizar una mascota
+      tags:
+        - Pets
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID de la mascota a actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+      responses:
+        "200":
+          description: Mascota actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+
+components:
+  schemas:
+    Pet:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID de la mascota
+          example: "65787285244ab4694ca2e64f"
+        name:
+          type: string
+          description: Nombre de la mascota
+          example: "Benito"
+        specie:
+          type: string
+          description: Especie de la mascota
+          example: "Perro"
+        birthDate:
+          type: string
+          description: Fecha de nacimiento de la mascota
+          example: "2020-01-01"
+        adopted:
+          type: boolean
+          description: Estado de adopcion de la mascota
+          example: false
+        owner:
+          type: string
+          description: ID del dueño de la mascota
+          example: "657872b1244ab4694ca2e659"
+        image:
+          type: string
+          description: URL de la imagen de la mascota
+          example: "https://example.com/image.jpg"

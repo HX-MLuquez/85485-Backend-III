@@ -1,0 +1,85 @@
+# app.use("/api/users", usersRouter);
+
+# router.get('/',usersController.getAllUsers);
+# router.get('/:uid',usersController.getUser);
+# router.put('/:uid',usersController.updateUser);
+# router.delete('/:uid',usersController.deleteUser);
+
+paths:
+  /api/users/:
+    get:
+      summary: Obtiene una lista de usuarios
+      tags:
+        - Users
+      responses:
+        "200":
+          description: La operación fue exitosa, se retorna un arreglo de los usuarios.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+  
+  /api/users/{uid}:
+    get:
+      summary: Obtiene un usuario por su ID
+      tags:
+        - Users
+      parameters:
+        - name: uid 
+          in: path 
+          required: true
+          description: Id del usuario 
+          schema: 
+            type: string
+      responses:
+        "200":
+          description: La operación fue exitosa, se retorna un usuario por su ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+
+
+
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string 
+          description: La PK del usuario auto-generada por mongoDB
+          example: "657872b1244ab4694ca2e659"
+        first_name:
+          type: string 
+          description: nombre del usuario
+          example: "Pepe"
+        last_name:
+          type: string 
+          description: apellido del usuario
+          example: "Lopez"
+        email:
+          type: string 
+          description: email del usuario
+          example: "pepe@gmail.com"
+        password:
+          type: string 
+          description: contraseña encriptada del usuario
+          example: "$2398498$23749029409"
+        role:
+          type: string 
+          description: rol del usuario
+          example: "admin"
+        pets:
+          type: array 
+          description: Lista de mascotas
+          items:
+            type: string
+          example: ["gato"]

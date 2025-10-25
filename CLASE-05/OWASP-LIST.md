@@ -1,6 +1,6 @@
 # LIST - OWASP 2021
 
-## 1. Broken Access Control
+## 1. Broken Access Control - Control de acceso deficiente
 Descripción general
 Desde la quinta posición, el 94 % de las aplicaciones se analizaron para detectar algún tipo de control de acceso deficiente, con una tasa de incidencia promedio del 3,81 %, y presenta la mayor incidencia en el conjunto de datos aportado, con más de 318 000. Entre las Enumeraciones de Debilidades Comunes (CWE) más destacadas se incluyen CWE-200: Exposición de información confidencial a un agente no autorizado , CWE-201: Inserción de información confidencial en los datos enviados y CWE-352: Falsificación de solicitud entre sitios.
 
@@ -61,7 +61,7 @@ Si un usuario no autenticado puede acceder a cualquiera de las páginas, se trat
 - No se exponga '/admin/12345', /user/988769 <- tenga un control
 - Cuidado con el no manejo de roles
 
-## 2. Cryptographic failures
+## 2. Cryptographic failures - Fallos criptográficos
 
 Descripción
 Lo primero es determinar las necesidades de protección de los datos en tránsito y en reposo. Por ejemplo, las contraseñas, los números de tarjetas de crédito, los historiales médicos, la información personal y los secretos comerciales requieren protección adicional, especialmente si dichos datos están sujetos a leyes de privacidad, como el Reglamento General de Protección de Datos (RGPD) de la UE, o a regulaciones, como la protección de datos financieros, como el Estándar de Seguridad de Datos PCI (PCI DSS). Para todos estos datos:
@@ -134,7 +134,7 @@ Escenario n.° 3 : La base de datos de contraseñas utiliza hashes simples o sin
 - No guardar una contraseña cual texto plano (ni temporalmente)
 - token <- fecha de vencimiento
 
-## 3. Injection
+## 3. Injection - Inyección
 
 Descripción general
 La inyección descendió al tercer puesto. El 94 % de las aplicaciones se sometieron a pruebas para detectar algún tipo de inyección, con una tasa de incidencia máxima del 19 %, una tasa de incidencia promedio del 3 % y 274 000 incidencias. Entre las Enumeraciones de Debilidades Comunes (CWE) más destacadas se encuentran CWE-79: Cross-site Scripting , CWE-89: SQL Injection y CWE-73: External Control of File Name or Path .
@@ -180,7 +180,7 @@ Esto cambia el significado de ambas consultas para devolver todos los registros 
 - req.body, req.query, req.params
 - Validar los tipos de datos -> Plantillas
 
-## 4. Insecure Design
+## 4. Insecure Design - Diseño inseguro
 Descripción general
 Una nueva categoría para 2021 se centra en los riesgos relacionados con fallas de diseño y arquitectura, y exige un mayor uso del modelado de amenazas, patrones de diseño seguro y arquitecturas de referencia. Como comunidad, necesitamos ir más allá del "desplazamiento a la izquierda" en el ámbito de la codificación para precodificar actividades críticas para los principios de Seguridad por Diseño. Entre las Enumeraciones de Debilidades Comunes (CWE) más destacadas se incluyen CWE-209: Generación de un mensaje de error con información confidencial , CWE-256: Almacenamiento de credenciales sin protección , CWE-501: Violación del límite de confianza y CWE-522: Credenciales con protección insuficiente .
 
@@ -226,7 +226,7 @@ Escenario n.° 3: El sitio web de comercio electrónico de una cadena minorista 
 - Evitar datos incoherentes
 - Evitar type text para lo que un password
 
-## 5. Security Misconfiguration
+## 5. Security Misconfiguration - Configuración incorrecta de seguridad
 Descripción general
 A partir del puesto n.° 6 de la edición anterior, el 90 % de las aplicaciones se analizaron para detectar algún tipo de configuración incorrecta, con una tasa de incidencia promedio del 4,51 % y más de 208 000 casos de una Enumeración de Debilidades Comunes (CWE) en esta categoría de riesgo. Con la creciente adopción de software altamente configurable, no sorprende ver un ascenso en esta categoría. Entre las CWE más destacadas se incluyen la CWE-16 Configuración y la CWE-611 Restricción incorrecta de la referencia a entidades externas XML .
 
@@ -282,7 +282,7 @@ Escenario n.° 4: Un proveedor de servicios en la nube (CSP) tiene permisos de u
 - Configurar mal multer
 - Configurar mal logger (ejemplo: mostrar info de error en production que no debemos mostrar)
 
-## 6. Vulnerable and outdated components
+## 6. Vulnerable and outdated components - Componentes vulnerables y obsoletos
 Descripción general
 Ocupó el segundo puesto en la encuesta de la comunidad de los 10 principales, pero también contaba con datos suficientes para entrar en el Top 10. Los componentes vulnerables son un problema conocido que nos cuesta probar y evaluar el riesgo, y es la única categoría que no tiene ninguna vulnerabilidad y exposición común (CVE) asignada a las CWE incluidas, por lo que se utiliza una ponderación predeterminada de 5.0 para exploits/impacto. Las CWE más destacadas incluidas son CWE-1104: Uso de componentes de terceros sin mantenimiento y las dos CWE del Top 10 de 2013 y 2017.
 
@@ -330,7 +330,7 @@ Existen herramientas automatizadas que ayudan a los atacantes a encontrar sistem
 - Evitar paquetes sin mantenimiento
 - Evitar tener dependencias que no utilicemos
 
-## 7. Identification and authentication failures
+## 7. Identification and authentication failures - Fallos de identificación y autenticación
 Descripción general
 Anteriormente conocida como Autenticación Defectuosa , esta categoría descendió del segundo puesto y ahora incluye Enumeraciones de Debilidades Comunes (CWE) relacionadas con errores de identificación. Entre las CWE más destacadas se incluyen CWE-297: Validación Incorrecta de Certificado con Desajuste de Host , CWE-287: Autenticación Incorrecta y CWE-384: Fijación de Sesión .
 
@@ -382,7 +382,7 @@ Escenario n.° 3: Los tiempos de espera de la sesión de la aplicación no está
 - Cuidado con el flow de recuperar contraseña
 - Implementar JWT
 
-## 8. Software and Data Integrity Failures
+## 8. Software and Data Integrity Failures - Fallos de integridad de software y datos
 Descripción general
 Una nueva categoría para 2021 se centra en realizar suposiciones relacionadas con actualizaciones de software, datos críticos y pipelines de CI/CD sin verificar su integridad. Uno de los impactos con mayor ponderación proviene de los datos de Vulnerabilidades y Exposiciones Comunes/Sistema de Puntuación de Vulnerabilidades Comunes (CVE/CVSS). Entre las Enumeraciones de Debilidades Comunes (CWE) más destacadas se encuentran CWE-829: Inclusión de funcionalidad de una esfera de control no confiable , CWE-494: Descarga de código sin verificación de integridad y CWE-502: Deserialización de datos no confiables .
 
@@ -413,7 +413,7 @@ Escenario n.° 3: Deserialización insegura: Una aplicación React llama a un co
 - No usar módulos (dependencias) no seguras de terceros
 - Evitar integrar dependencias no necesarias
 
-## 9. Logging and monitoring failures
+## 9. Logging and monitoring failures - Fallos de registro y monitorización
 Descripción general
 El registro y la monitorización de seguridad provienen de la encuesta comunitaria Top 10 (n.º 3), subiendo ligeramente desde la décima posición en el OWASP Top 10 2017. El registro y la monitorización pueden ser difíciles de probar, a menudo implican entrevistas o preguntar si se detectaron ataques durante una prueba de penetración. No hay muchos datos de CVE/CVSS para esta categoría, pero detectar y responder a las brechas es fundamental. Aun así, puede tener un gran impacto en la rendición de cuentas, la visibilidad, las alertas de incidentes y el análisis forense. Esta categoría se expande más allá de CWE-778 Registro insuficiente para incluir CWE-117 Neutralización de salida incorrecta para registros , CWE-223 Omisión de información relevante para la seguridad y CWE-532 Inserción de información confidencial en el archivo de registro .
 
@@ -468,7 +468,7 @@ Escenario n.° 3: Una importante aerolínea europea sufrió una infracción de l
 - Nunca mostrar el document completo de un user
 - Generar alertas en base al monitoreo de datos
 
-## 10. Server Side Request Forgery (SSRF)
+## 10. Server Side Request Forgery (SSRF) - Falsificación de solicitudes del lado del servidor (SSRF)
 Descripción general
 Esta categoría se añade a partir de la encuesta comunitaria Top 10 (n.º 1). Los datos muestran una tasa de incidencia relativamente baja, con una cobertura de pruebas superior a la media y unas calificaciones de potencial de exploit e impacto superiores a la media. Dado que es probable que las nuevas entradas consistan en una sola o un pequeño grupo de Enumeraciones de Debilidades Comunes (EDC) para su atención y concientización, se espera que se les preste atención y se puedan integrar en una categoría más amplia en una próxima edición.
 

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulario Completo</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 800px;
+        width: 100%;
+        padding: 40px;
+      }
+
+      h1 {
+        color: #667eea;
+        margin-bottom: 10px;
+        font-size: 2em;
+      }
+
+      .subtitle {
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 0.95em;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 600;
+        font-size: 0.95em;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        font-family: inherit;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      input[type="checkbox"],
+      input[type="radio"] {
+        width: auto;
+        margin-right: 8px;
+      }
+
+      .checkbox-group,
+      .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .checkbox-item,
+      .radio-item {
+        display: flex;
+        align-items: center;
+      }
+
+      input[type="color"] {
+        height: 50px;
+        cursor: pointer;
+      }
+
+      input[type="range"] {
+        cursor: pointer;
+      }
+
+      .range-value {
+        display: inline-block;
+        margin-left: 10px;
+        font-weight: bold;
+        color: #667eea;
+      }
+
+      button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      @media (max-width: 600px) {
+        .two-column {
+          grid-template-columns: 1fr;
+        }
+
+        .container {
+          padding: 25px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>📋 Formulario Completo</h1>
+      <p class="subtitle">Ejemplo con todos los tipos de input HTML</p>
+
+      <form id="myForm">
+        <!-- Text -->
+        <div class="form-group">
+          <label for="nombre">Nombre Completo</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            placeholder="Ingresa tu nombre"
+            required
+          />
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="ejemplo@correo.com"
+            required
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Mínimo 8 caracteres"
+            minlength="8"
+          />
+        </div>
+
+        <!-- Number -->
+        <div class="form-group">
+          <label for="edad">Edad</label>
+          <input
+            type="number"
+            id="edad"
+            name="edad"
+            min="18"
+            max="100"
+            placeholder="18"
+          />
+        </div>
+
+        <!-- Tel -->
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input
+            type="tel"
+            id="telefono"
+            name="telefono"
+            placeholder="+54 9 11 1234-5678"
+          />
+        </div>
+
+        <!-- Date -->
+        <div class="two-column">
+          <div class="form-group">
+            <label for="fecha">Fecha de Nacimiento</label>
+            <input type="date" id="fecha" name="fecha" />
+          </div>
+
+          <!-- Time -->
+          <div class="form-group">
+            <label for="hora">Hora Preferida</label>
+            <input type="time" id="hora" name="hora" />
+          </div>
+        </div>
+
+        <!-- Color -->
+        <div class="form-group">
+          <label for="color">Color Favorito</label>
+          <input type="color" id="color" name="color" value="#667eea" />
+        </div>
+
+        <!-- Range -->
+        <div class="form-group">
+          <label for="satisfaccion">Nivel de Satisfacción</label>
+          <input
+            type="range"
+            id="satisfaccion"
+            name="satisfaccion"
+            min="0"
+            max="10"
+            value="5"
+            oninput="document.getElementById('rangeValue').textContent = this.value"
+          />
+          <span class="range-value" id="rangeValue">5</span>
+        </div>
+
+        <!-- URL -->
+        <div class="form-group">
+          <label for="sitio">Sitio Web</label>
+          <input
+            type="url"
+            id="sitio"
+            name="sitio"
+            placeholder="https://ejemplo.com"
+          />
+        </div>
+
+        <!-- Select -->
+        <div class="form-group">
+          <label for="pais">País</label>
+          <select id="pais" name="pais">
+            <option value="">Selecciona un país</option>
+            <option value="ar">Argentina</option>
+            <option value="mx">México</option>
+            <option value="es">España</option>
+            <option value="co">Colombia</option>
+            <option value="cl">Chile</option>
+          </select>
+        </div>
+
+        <!-- Radio Buttons -->
+        <div class="form-group">
+          <label>Género</label>
+          <div class="radio-group">
+            <div class="radio-item">
+              <input
+                type="radio"
+                id="masculino"
+                name="genero"
+                value="masculino"
+              />
+              <label for="masculino">Masculino</label>
+            </div>
+            <div class="radio-item">
+              <input
+                type="radio"
+                id="femenino"
+                name="genero"
+                value="femenino"
+              />
+              <label for="femenino">Femenino</label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" id="otro" name="genero" value="otro" />
+              <label for="otro">Otro</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checkboxes -->
+        <div class="form-group">
+          <label>Intereses</label>
+          <div class="checkbox-group">
+            <div class="checkbox-item">
+              <input
+                type="checkbox"
+                id="tecnologia"
+                name="intereses"
+                value="tecnologia"
+              />
+              <label for="tecnologia">Tecnología</label>
+            </div>
+            <div class="checkbox-item">
+              <input
+                type="checkbox"
+                id="deportes"
+                name="intereses"
+                value="deportes"
+              />
+              <label for="deportes">Deportes</label>
+            </div>
+            <div class="checkbox-item">
+              <input
+                type="checkbox"
+                id="musica"
+                name="intereses"
+                value="musica"
+              />
+              <label for="musica">Música</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- File -->
+        <div class="form-group">
+          <label for="archivo">Subir Archivo</label>
+          <input type="file" id="archivo" name="archivo" />
+        </div>
+
+        <!-- Textarea -->
+        <div class="form-group">
+          <label for="comentarios">Comentarios</label>
+          <textarea
+            id="comentarios"
+            name="comentarios"
+            rows="4"
+            placeholder="Escribe tus comentarios aquí..."
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit">Enviar Formulario</button>
+      </form>
+    </div>
+
+    <script>
+      document
+        .getElementById("myForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          alert(
+            "¡Formulario enviado con éxito!\n\nEste es solo un ejemplo. En un caso real, los datos se enviarían a un servidor."
+          );
+        });
+    </script>
+  </body>
+</html>
