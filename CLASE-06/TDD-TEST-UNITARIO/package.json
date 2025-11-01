@@ -1,0 +1,29 @@
+{
+  "name": "plantilladocumentacion",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "mocha ./test/**/*.test.js --exit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.15.1",
+    "multer": "^2.0.1"
+  },
+  "devDependencies": {
+    "chai": "^5.3.1",
+    "mocha": "^11.7.1",
+    "moment": "^2.30.1"
+  }
+}
