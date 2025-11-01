@@ -13,9 +13,9 @@ const MONGO_URI =
 
 // Instancia de supertest apuntando a tu servidor
 // const request = supertest("http://localhost:8080");
-const request = supertest(app);
+const requestSupertestServerCloneMoreTest = supertest(app);
 
-//* request {} <- es nuestro Servidor Test <----
+//* request {} <- es nuestro Servidor Test <---- request===appServerTest
 
 describe("Testing users Api", function () {
   this.timeout(6000); // Tolerancia de 6 segundos para cada test
@@ -39,6 +39,13 @@ describe("Testing users Api", function () {
       password: "123456",
     };
     this.cookie = null;
+    /*
+    cookie:
+    {
+      name: 'coderCookie',
+      value: 'eyJhbGciOi...',
+    };
+    */
   });
 
   after(async function () {
@@ -54,7 +61,7 @@ describe("Testing users Api", function () {
 
   // Test 01 - Registro de un User
   it("Test Registro Usuario: Debe poder registrar correctamente un usuario", async function () {
-    const response = await request
+    const response = await requestSupertestServerCloneMoreTest
       .post("/api/sessions/register")
       .send(this.mockUser); // Enviamos el usuario de prueba por body
     // console.log("----->", response);
@@ -68,7 +75,7 @@ describe("Testing users Api", function () {
       password: this.mockUser.password,
     };
 
-    const result = await request.post("/api/sessions/login").send(mockLogin);
+    const result = await requestSupertestServerCloneMoreTest.post("/api/sessions/login").send(mockLogin);
     // console.log("result.header: ", result.header);
     /*
     'set-cookie': [
@@ -84,6 +91,7 @@ describe("Testing users Api", function () {
     expect(this.cookie.name).to.eql("coderCookie");
     expect(this.cookie.value).to.be.ok;
   });
+  
   it("Test Ruta de Mascotas: Debe poder crear una mascota con imagen", async function () {
     // Mock de mascota a crear
     const mockPet = {
@@ -93,7 +101,7 @@ describe("Testing users Api", function () {
     };
 
     // Realiza la petición POST con campos y archivo adjunto
-    const result = await request
+    const result = await requestSupertestServerCloneMoreTest
       .post("/api/pets/withimage")
       .set("Cookie", `${this.cookie.name}=${this.cookie.value}`)
       .field("name", mockPet.name)
@@ -109,7 +117,7 @@ describe("Testing users Api", function () {
 });
 
 /*
-request {
+requestSupertestServerCloneMoreTest {
   métodos
   routes de nuestra app
 }
@@ -122,4 +130,55 @@ describe{
 }
 
 
+
+
+npm test 
+
+describe {
+
+
+}
+before -> conectar a la base de datos
+describe {
+mockUser: {
+      first_name: "Usuario de prueba 2",
+      last_name: "Apellido de prueba 2",
+      email: "correodeprueba2@gmail.com",
+      password: "123456",
+    };
+cookie: null;
+}
+
+
+* SERVER 
+app {
+get /api/sessions/register  
+post /api/sessions/login
+post /api/pets/withimage
+get: function(){...} 
+use: function(){...}
+listen: function(){...}
+...
+}
+
+---> requestSUPERTEST 
+requestSupertestServerCloneMoreTest {
+get /api/sessions/register  
+post /api/sessions/login
+post /api/pets/withimage
+get: function(){...} 
+use: function(){...}
+listen: function(){...}
+...
++ métodos para testear que implementa supertest
++ - .get()
++ - .post()
++ - .put()
++ - .delete()
++ - .set()
++ - .expect()
++ - .send()
++ - .attach()
+...
+}
 */
